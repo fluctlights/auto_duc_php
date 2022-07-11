@@ -7,17 +7,13 @@
 </head>
 
 <body>
-    <?php
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $ip_addr = "&ip=".$ip;
-    ?>
+    <form name="formulario" id="formulario" method="POST">
+    <h2>Introduce credenciales y el hostname a actualizar de NO-IP</h2>
+        Email: <input type="text" name="email" id="email"/><br />
+        Password: <input type="text" name="password" id="password"/><br />
+        Hostname: <input type="text" name="domain" id="domain"/><br />
+        <button id="envia_info" onclick="return comprobar()">Enviar datos</button>
 
-    <form action="recibe_post.php" method="POST" name="formulario">
-    <h2>Enter your credentials and the domain to update</h2>
-        Email: <input type="text" name="email" /><br />
-        Password: <input type="text" name="password" /><br />
-        Hostname: <input type="text" name="hostname" /><br />
-        <input type="submit" name="send" value="Send" />
     </form>
 
     <?php
