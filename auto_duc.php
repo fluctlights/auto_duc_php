@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 <head>
 <title>Update your NO-IP domain!</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -8,37 +8,34 @@
 
 <body>
     <form name="formulario" id="formulario" method="POST">
-    <h2>Introduce credenciales y el hostname a actualizar de NO-IP</h2>
-        Email: <input type="text" name="email" id="email"/><br />
-        Password: <input type="text" name="password" id="password"/><br />
-        Hostname: <input type="text" name="domain" id="domain"/><br />
+    <h2>Rellena los campos para actualizar el dominio</h2>
+        Usuario: <input type="text" name="usuario" id="usuario"/><br />
+        Contrasena: <input type="password" name="pass" id="pass"/><br />
+        Dominio: <input type="text" name="dominio" id="dominio"/><br />
         <button id="envia_info" onclick="return comprobar()">Enviar datos</button>
 
     </form>
 
-    <?php
-        $email = $_POST["email"];
-        $password = $_POST["password"];
-        $host = $_POST["hostname"];
-        $hostname = "hostname=".$host;
-        $url = "https://dynupdate.no-ip.com/nic/update?".$hostname.$ip_addr;
+    <!-- Si hemos pasado el formulario hacemos la actualizacion --> 
 
-        $credentials = $email.":".$password;
-        $b64 = base64_encode ( string $credentials ) : string
-        $auth_header = "Authorization: Basic ".$b64
+    <?php
+        $usuario = $_POST["usuario"];
+        $password = $_POST["pass"];
+        $host = $_POST["dominio"];
+        $hostname = "hostname=$host";
+
+        # La IP no es necesaria usarla porque la API puede obtener la IP como tal
+        $url = "http://$usuario:$password@dynupdate.no-ip.com/nic/update?$hostname";
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $auth_header);
-        
-        //for debug only!
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
-        $resp = curl_exec($curl);
+        curl_exec($curl);
         curl_close($curl);
-        var_dump($resp);
+
+        # Cambiamos de página web
+        header("Location: connectdb.php", TRUE, 301); // si no va entonces solo el location
+        die();
     ?>
+
 </body>
 </html>
